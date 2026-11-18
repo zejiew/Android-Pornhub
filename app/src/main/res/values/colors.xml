@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#FF0F0F12</color>
+    <color name="bar">#FF17171C</color>
+    <color name="nav_bg">#FF121216</color>
+    <color name="accent">#FFF5A623</color>
+    <color name="text">#FFEDEDED</color>
+    <color name="text_dim">#FF8A8A93</color>
+    <color name="divider">#FF232329</color>
+</resources>

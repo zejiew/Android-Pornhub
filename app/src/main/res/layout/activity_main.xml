@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <!-- 顶部：地址/搜索栏 -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/bar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <EditText
+            android:id="@+id/urlBar"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_urlbar"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionGo"
+            android:inputType="textUri"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:singleLine="true"
+            android:textColor="@color/text"
+            android:textColorHint="@color/text_dim"
+            android:textSize="13sp" />
+
+        <ImageButton
+            android:id="@+id/btnGo"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/nav_search"
+            android:src="@drawable/ic_search"
+            android:tint="@color/text" />
+    </LinearLayout>
+
+    <!-- 进度条 -->
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:max="100"
+        android:progressTint="@color/accent"
+        android:visibility="gone" />
+
+    <!-- 主体 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <WebView
+            android:id="@+id/web"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg" />
+
+        <LinearLayout
+            android:id="@+id/errorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/errorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:textColor="@color/text_dim"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnRetry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:text="@string/menu_reload"
+                android:textColor="@color/accent"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 底部导航 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/nav_bg"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/navHome"
+            style="@style/NavItem">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/nav_home"
+                android:src="@drawable/ic_home"
+                android:tint="@color/accent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_home"
+                android:textColor="@color/accent"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navSearch"
+            style="@style/NavItem">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/nav_search"
+                android:src="@drawable/ic_search"
+                android:tint="@color/text_dim" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_search"
+                android:textColor="@color/text_dim"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navFav"
+            style="@style/NavItem">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/nav_fav"
+                android:src="@drawable/ic_fav"
+                android:tint="@color/text_dim" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_fav"
+                android:textColor="@color/text_dim"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navDownload"
+            style="@style/NavItem">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/nav_download"
+                android:src="@drawable/ic_download"
+                android:tint="@color/text_dim" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_download"
+                android:textColor="@color/text_dim"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navMore"
+            style="@style/NavItem">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/nav_more"
+                android:src="@drawable/ic_more"
+                android:tint="@color/text_dim" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/nav_more"
+                android:textColor="@color/text_dim"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PH Client</string>
+    <string name="title_downloads">Downloads</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_fav">Favorites</string>
+    <string name="nav_download">Downloads</string>
+    <string name="nav_more">More</string>
+    <string name="age_title">Age verification</string>
+    <string name="age_message">This app opens a site that contains adult content and is for adults aged 18 or older only.&#10;&#10;By tapping "I am 18 or older" you confirm that you are an adult and accept responsibility for your own access.</string>
+    <string name="age_confirm">I am 18 or older</string>
+    <string name="age_exit">Exit</string>
+    <string name="search_hint">Search…</string>
+    <string name="login_needed">Login required</string>
+    <string name="exit_hint">Press back again to exit</string>
+    <string name="menu_reload">Reload</string>
+    <string name="menu_clear">Clear cache &amp; cookies</string>
+    <string name="menu_browser">Open in browser</string>
+    <string name="menu_login">Open login page</string>
+    <string name="menu_about">About</string>
+    <string name="about_text">PH Client v1.0&#10;&#10;A WebView based client. Login state is kept locally via cookies and never uploaded to any third party.&#10;&#10;This app does not provide or host any content.</string>
+    <string name="download_started">Added to download queue</string>
+    <string name="download_failed">Download failed</string>
+    <string name="no_downloads">No downloads yet</string>
+    <string name="clear_done">Cleared, reloading</string>
+    <string name="file_missing">File missing or moved</string>
+    <string name="no_player">No video player available</string>
+    <string name="delete_record">Delete record</string>
+    <string name="delete_file">Delete file</string>
+    <string name="net_error">Network error. Check your connection or proxy and retry.</string>
+</resources>

@@ -1,0 +1,41 @@
+# ============================================================
+#  GitHub Actions：云端自动构建 APK
+#  用法：把整个项目推到 GitHub 仓库，Actions 会自动出包，
+#        在 Actions 页面的 Artifacts 里下载 app-release.apk
+#  好处：不需要本机装 Android SDK，也不需要能连 Google 源
+# ============================================================
+name: Build APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
+          retention-days: 30

@@ -1,0 +1,5 @@
+# 本文件用于告诉 Android Studio 你的 SDK 在哪。
+# 现在不存在（因为本机没装 SDK）。用 Android Studio 打开项目时会自动生成，
+# 或者手动创建并写入你机器上的路径（注意 Windows 路径要转义反斜杠）：
+#
+# sdk.dir=C\:\\Users\\你的用户名\\AppData\\Local\\Android\\Sdk

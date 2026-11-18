@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.PHClient" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/bar</item>
+        <item name="android:navigationBarColor">@color/nav_bg</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="Theme.PHClient.Player" parent="Theme.PHClient">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+</resources>

@@ -1,0 +1,54 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.phclient.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.phclient.app"
+        minSdk 26            // Android 8.0+，保证 WebView 内核足够新、支持画中画
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+        resourceConfigurations += ['zh', 'en']
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        release {
+            // 个人自用：默认用 debug 签名，保证 assembleRelease 出来的包能直接安装。
+            // 想换成自己的证书：在 keystore/release.jks 放一个密钥库，或在下面的
+            // signingConfigs 里改成你自己的 storeFile / storePassword / keyAlias。
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    packaging {
+        resources {
+            excludes += ['META-INF/*.kotlin_module']
+        }
+    }
+}
+
+dependencies {
+    // 刻意不引入任何第三方依赖：全部使用 Android 系统 SDK。
+    // 依赖越少，构建越不容易因为网络/仓库问题失败。
+}
