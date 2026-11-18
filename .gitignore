@@ -23,3 +23,9 @@ keystore/
 .audit-types.py
 build_check/
 .gen-r.py
+
+# ±¾µØ½Å±¾
+.watch-run.py
+.list-artifacts.py
+.dl*.py
+PHClient-release.zip
