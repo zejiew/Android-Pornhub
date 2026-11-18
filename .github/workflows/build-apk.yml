@@ -1,19 +1,22 @@
 # ============================================================
 #  GitHub Actions：云端自动构建 APK
-#  用法：把整个项目推到 GitHub 仓库，Actions 会自动出包，
-#        在 Actions 页面的 Artifacts 里下载 app-release.apk
-#  好处：不需要本机装 Android SDK，也不需要能连 Google 源
+#
+#  说明：本仓库没有提交 gradle-wrapper.jar（二进制不便管理），
+#        所以这里用 gradle/actions 直接安装 Gradle，而不是调用 ./gradlew。
+#        本地命令行构建请先执行一次 `gradle wrapper` 生成 gradlew。
 # ============================================================
 name: Build APK
 
 on:
   push:
     branches: [ main, master ]
+  pull_request:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,18 +27,43 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
+      # 安装 Gradle（不依赖仓库里的 wrapper 文件）
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      # 显式装齐本项目需要的 SDK 组件，避免 AGP 自动下载失败
+      - name: Install Android SDK components
+        run: |
+          sdkmanager --install \
+            "platforms;android-34" \
+            "build-tools;34.0.0" \
+            "platform-tools"
+          yes | sdkmanager --licenses || true
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace
+        run: gradle assembleRelease --stacktrace --no-daemon
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
+          name: app-release-apk
           path: app/build/outputs/apk/release/*.apk
           retention-days: 30
+
+      # 构建失败时把日志也留下，方便排查
+      - name: Upload build reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-reports
+          path: |
+            app/build/reports/**
+            **/build/outputs/logs/**
+          retention-days: 7
+          if-no-files-found: ignore

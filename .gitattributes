@@ -1,0 +1,15 @@
+# 统一换行符：文本文件用 LF，避免在 Windows 提交后 Linux 上的 shell 脚本执行失败
+* text=auto eol=lf
+
+# Windows 批处理保持 CRLF，否则 cmd 可能解析异常
+*.bat text eol=crlf
+
+# 二进制文件不做换行符转换
+*.jar binary
+*.apk binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.keystore binary
+*.jks binary
