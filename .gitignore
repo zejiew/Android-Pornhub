@@ -12,3 +12,6 @@ output/
 keystore/
 *.jks
 *.keystore
+
+# 本地临时校验脚本
+.ci-check.py
