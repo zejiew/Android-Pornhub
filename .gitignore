@@ -15,3 +15,8 @@ keystore/
 
 # 本地临时校验脚本
 .ci-check.py
+
+# 构建日志与本地校验脚本
+.logs/
+.import-check.py
+*.zip

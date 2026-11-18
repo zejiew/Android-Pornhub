@@ -1,7 +1,9 @@
 package com.phclient.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -9,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -61,13 +64,13 @@ public class DownloadActivity extends Activity {
             tv.setOnClickListener(v -> play(it.name));
 
             tv.setOnLongClickListener(v -> {
-                new android.app.AlertDialog.Builder(this)
+                new AlertDialog.Builder(this)
                         .setItems(new String[]{getString(R.string.delete_record),
                                 getString(R.string.delete_file)}, (d, w) -> {
                             if (w == 0) {
                                 DownloadStore.get(this).remove(it.name);
                             } else {
-                                new java.io.File(DownloadStore.dir(), it.name).delete();
+                                new File(DownloadStore.dir(), it.name).delete();
                                 DownloadStore.get(this).remove(it.name);
                             }
                             recreate();
@@ -81,7 +84,7 @@ public class DownloadActivity extends Activity {
     }
 
     private void play(String name) {
-        java.io.File f = new java.io.File(DownloadStore.dir(), name);
+        File f = new File(DownloadStore.dir(), name);
         if (!f.exists()) {
             Toast.makeText(this, R.string.file_missing, Toast.LENGTH_SHORT).show();
             return;

@@ -10,6 +10,7 @@ import android.provider.OpenableColumns;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Locale;
 
 /**
  * 极简 FileProvider 替代实现（零第三方依赖）。
@@ -93,7 +94,7 @@ public class SimpleFileProvider extends ContentProvider {
     public String getType(Uri uri) {
         String name = uri.getLastPathSegment();
         if (name == null) return "application/octet-stream";
-        String lower = name.toLowerCase(java.util.Locale.US);
+        String lower = name.toLowerCase(Locale.US);
         if (lower.endsWith(".mp4") || lower.endsWith(".m4v")) return "video/mp4";
         if (lower.endsWith(".webm")) return "video/webm";
         if (lower.endsWith(".mkv")) return "video/x-matroska";
