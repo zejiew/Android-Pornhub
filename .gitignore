@@ -21,3 +21,5 @@ keystore/
 .import-check.py
 *.zip
 .audit-types.py
+build_check/
+.gen-r.py
