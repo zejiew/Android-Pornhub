@@ -8,11 +8,10 @@ android {
 
     defaultConfig {
         applicationId "com.phclient.app"
-        minSdk 26            // Android 8.0+，保证 WebView 内核足够新、支持画中画
+        minSdk 26            // Android 8.0+：WebView 内核足够新，且支持画中画
         targetSdk 34
         versionCode 1
         versionName "1.0.0"
-        resourceConfigurations += ['zh', 'en']
     }
 
     buildTypes {
@@ -22,8 +21,7 @@ android {
         }
         release {
             // 个人自用：默认用 debug 签名，保证 assembleRelease 出来的包能直接安装。
-            // 想换成自己的证书：在 keystore/release.jks 放一个密钥库，或在下面的
-            // signingConfigs 里改成你自己的 storeFile / storePassword / keyAlias。
+            // 要换自己的证书：在下面 signingConfigs 里改成你的 storeFile / 密码 / alias。
             signingConfig signingConfigs.debug
             minifyEnabled false
             shrinkResources false
@@ -39,12 +37,6 @@ android {
     lint {
         abortOnError false
         checkReleaseBuilds false
-    }
-
-    packaging {
-        resources {
-            excludes += ['META-INF/*.kotlin_module']
-        }
     }
 }
 
