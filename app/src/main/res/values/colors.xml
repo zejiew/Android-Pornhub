@@ -3,8 +3,10 @@
     <color name="bg">#FF0F0F12</color>
     <color name="bar">#FF17171C</color>
     <color name="nav_bg">#FF121216</color>
-    <color name="accent">#FFF5A623</color>
+    <color name="accent">#FFFF9900</color>
     <color name="text">#FFEDEDED</color>
     <color name="text_dim">#FF8A8A93</color>
     <color name="divider">#FF232329</color>
+    <!-- 自适应图标背景：取 Logo 的黑底，保证圆形/方形裁切后不露白边 -->
+    <color name="icon_bg">#FF000000</color>
 </resources>

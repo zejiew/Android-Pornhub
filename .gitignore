@@ -31,3 +31,8 @@ build_check/
 PHClient-release.zip
 build_check/
 .verify.py
+build_check/
+.verify.py
+.gen-icons*.py
+.preview-icons.py
+icon_preview.png
