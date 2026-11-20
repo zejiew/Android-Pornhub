@@ -65,6 +65,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 |---|---|
 | `MainActivity.java` | 主容器：WebView、Cookie、全屏、下载、返回键 |
 | `App.java` | Application：开启 WebView 调试、全局 Cookie 接受 |
+| `Account.java` | 识别当前登录用户名（收藏页 URL 需要它） |
 | `AdBlocker.java` | 广告域名黑名单（**不含**视频 CDN，避免影响播放） |
 | `DownloadStore.java` | 下载记录的本地存储 |
 | `SimpleFileProvider.java` | 零依赖的 FileProvider（Android 7+ 打开本地视频必需） |
@@ -72,6 +73,13 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 
 几个必须知道的细节：
 
+- **收藏页 URL 必须带用户名**：正确格式是
+  `/users/<你的用户名>/videos/favorites`。
+  如果写成 `/users/favorites`，站点会把 `favorites` **当成用户名**，
+  跳到一个叫 favorites 的用户主页上。App 会从页面自动嗅探用户名并缓存，
+  识别失败时引导你去登录页。
+- **搜索按钮**必须先拿到焦点再主动 `showSoftInput`，只调 `requestFocus`
+  键盘不会弹出，用户会以为按钮坏了。
 - **Cookie 是登录态的唯一依赖**。`setAcceptCookie(true)` + `setAcceptThirdPartyCookies`
   缺一不可；`MainActivity` 在 `onPageFinished` 与 `onPause` 都调了 `flush()`，
   避免进程被杀掉后登录态丢失。

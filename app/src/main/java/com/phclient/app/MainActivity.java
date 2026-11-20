@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
+import java.util.Locale;
 
 /**
  * 主界面：承载站点的 WebView 容器。
@@ -125,11 +126,11 @@ public class MainActivity extends Activity {
         });
         findViewById(R.id.navSearch).setOnClickListener(v -> {
             highlightNav(R.id.navSearch);
-            urlBar.requestFocus();
+            focusSearchBar();
         });
         findViewById(R.id.navFav).setOnClickListener(v -> {
             highlightNav(R.id.navFav);
-            web.loadUrl(Const.FAVORITES);
+            openFavorites();
         });
         findViewById(R.id.navDownload).setOnClickListener(v -> {
             startActivity(new Intent(this, DownloadActivity.class));
@@ -138,6 +139,98 @@ public class MainActivity extends Activity {
 
         // 输入框聚焦时不要自动弹出全键盘挡住内容，交给用户点
         urlBar.clearFocus();
+    }
+
+    /**
+     * 打开收藏页。
+     *
+     * 站点收藏页路径必须带用户名：/users/<name>/videos/favorites。
+     * 不知道用户名时，先抓当前页面解析；仍拿不到就引导去登录页，
+     * 而不是像以前那样跳到 /users/favorites（会被当成用户名 favorites）。
+     */
+    private void openFavorites() {
+        String user = Account.cached();
+        if (user != null) {
+            web.loadUrl(String.format(Locale.US, Const.USER_FAVORITES_FMT, user));
+            return;
+        }
+
+        if (!Account.likelyLoggedIn()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.login_needed)
+                    .setMessage(R.string.login_needed_msg)
+                    .setPositiveButton(R.string.menu_login,
+                            (d, w) -> web.loadUrl(Const.LOGIN))
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+            return;
+        }
+
+        // 已登录但还没拿到用户名：嗅探当前页面
+        Toast.makeText(this, R.string.resolving_account, Toast.LENGTH_SHORT).show();
+        web.evaluateJavascript(
+                "(function(){try{"
+                        + "var a=document.querySelector('a[href*=\"/users/\"][href*=\"/videos\"]');"
+                        + "if(a){var m=a.getAttribute('href').match(/\\\\/users\\\\/([^\\\\/?#]+)/);if(m)return m[1];}"
+                        + "var u=document.querySelector('.username, #username, [data-username]');"
+                        + "if(u){return (u.getAttribute('data-username')||u.textContent||'').trim();}"
+                        + "return '';}catch(e){return '';}})()",
+                value -> {
+                    String name = cleanJsString(value);
+                    if (name != null && !name.isEmpty()) {
+                        Account.remember(name);
+                        web.loadUrl(String.format(Locale.US, Const.USER_FAVORITES_FMT, name));
+                    } else {
+                        Toast.makeText(this, R.string.need_username, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    /** 去掉 evaluateJavascript 返回的 JSON 引号与转义 */
+    private String cleanJsString(String raw) {
+        if (raw == null) return null;
+        String s = raw.trim();
+        if (s.startsWith("\"") && s.endsWith("\"") && s.length() >= 2) {
+            s = s.substring(1, s.length() - 1);
+        }
+        s = s.replace("\\\"", "\"").replace("\\\\", "\\").trim();
+        if (s.equals("null") || s.isEmpty()) return null;
+        return s;
+    }
+
+    /** 页面加载完顺手嗅探用户名，成功就缓存；失败静默，不打扰用户 */
+    private void sniffUsernameQuietly(String url) {
+        if (url == null || Account.cached() != null) {
+            return;
+        }
+        try {
+            web.evaluateJavascript(
+                    "(function(){try{"
+                            + "var a=document.querySelector('a[href*=\"/users/\"][href*=\"/videos\"]');"
+                            + "if(a){var m=a.getAttribute('href').match(/\\\\/users\\\\/([^\\\\/?#]+)/);if(m)return m[1];}"
+                            + "return '';}catch(e){return '';}})()",
+                    value -> {
+                        String name = cleanJsString(value);
+                        if (name != null && !name.isEmpty()) {
+                            Account.remember(name);
+                        }
+                    });
+        } catch (Throwable ignored) {
+        }
+    }
+
+    /** 聚焦搜索框并主动弹出软键盘（以前只 requestFocus，键盘不弹，看着像点了没反应） */
+    private void focusSearchBar() {
+        urlBar.setFocusableInTouchMode(true);
+        urlBar.requestFocus();
+        urlBar.postDelayed(() -> {
+            android.view.inputmethod.InputMethodManager imm =
+                    (android.view.inputmethod.InputMethodManager)
+                            getSystemService(INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(urlBar, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 120);
     }
 
     private void highlightNav(int id) {
@@ -156,12 +249,16 @@ public class MainActivity extends Activity {
     private void doSearchOrNavigate() {
         String input = urlBar.getText().toString().trim();
         if (input.isEmpty()) {
+            // 以前这里直接 return，用户点了没任何反馈，看起来像按钮坏了
+            Toast.makeText(this, R.string.search_empty, Toast.LENGTH_SHORT).show();
+            focusSearchBar();
             return;
         }
         if (input.startsWith("http://") || input.startsWith("https://")) {
             web.loadUrl(input);
         } else {
             web.loadUrl(Const.SEARCH + Uri.encode(input));
+            highlightNav(R.id.navSearch);
         }
         urlBar.clearFocus();
         hideKeyboard();
@@ -265,6 +362,8 @@ public class MainActivity extends Activity {
                     urlBar.setHint(shortUrl(url));
                 }
                 CookieManager.getInstance().flush();
+                // 顺手识别登录用户名，供收藏页/历史页拼 URL 使用
+                sniffUsernameQuietly(url);
             }
 
             @Override
@@ -454,6 +553,7 @@ public class MainActivity extends Activity {
             web.clearCache(true);
             web.clearHistory();
             web.clearFormData();
+            Account.forget();   // 连同缓存的用户名一起清掉，避免登出后还跳旧账号的收藏页
             runOnUiThread(() -> {
                 Toast.makeText(this, R.string.clear_done, Toast.LENGTH_SHORT).show();
                 web.loadUrl(Const.HOME);

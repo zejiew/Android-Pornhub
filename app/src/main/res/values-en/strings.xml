@@ -29,4 +29,8 @@
     <string name="delete_record">Delete record</string>
     <string name="delete_file">Delete file</string>
     <string name="net_error">Network error. Check your connection or proxy and retry.</string>
+    <string name="search_empty">Please enter a search keyword</string>
+    <string name="login_needed_msg">Favorites require you to be logged in. Go to the login page now?</string>
+    <string name="resolving_account">Detecting your account…</string>
+    <string name="need_username">Could not detect your username automatically. Open your profile page once, or sign in again via More → Open login page.</string>
 </resources>

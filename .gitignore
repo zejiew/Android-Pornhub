@@ -29,3 +29,5 @@ build_check/
 .list-artifacts.py
 .dl*.py
 PHClient-release.zip
+build_check/
+.verify.py
