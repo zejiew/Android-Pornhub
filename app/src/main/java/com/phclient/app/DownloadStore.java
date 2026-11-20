@@ -90,6 +90,6 @@ public final class DownloadStore {
 
     public static File dir() {
         return new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_MOVIES), "PHClient");
+                Environment.DIRECTORY_MOVIES), "ZHUB");
     }
 }

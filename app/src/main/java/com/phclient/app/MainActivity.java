@@ -590,7 +590,7 @@ public class MainActivity extends Activity {
             req.setAllowedOverMetered(true);
             req.setAllowedOverRoaming(false);
             req.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES,
-                    "PHClient/" + fileName);
+                    "ZHUB/" + fileName);
 
             long id = dm.enqueue(req);
             DownloadStore.get(this).add(new DownloadStore.Item(

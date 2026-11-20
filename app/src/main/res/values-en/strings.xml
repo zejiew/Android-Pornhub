@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PH Client</string>
+    <string name="app_name">ZHUB</string>
     <string name="title_downloads">Downloads</string>
     <string name="nav_home">Home</string>
     <string name="nav_search">Search</string>
@@ -19,7 +19,7 @@
     <string name="menu_browser">Open in browser</string>
     <string name="menu_login">Open login page</string>
     <string name="menu_about">About</string>
-    <string name="about_text">PH Client v1.0&#10;&#10;A WebView based client. Login state is kept locally via cookies and never uploaded to any third party.&#10;&#10;This app does not provide or host any content.</string>
+    <string name="about_text">ZHUB&#10;&#10;A WebView based client. Login state is kept locally via cookies and never uploaded to any third party.&#10;&#10;This app does not provide or host any content.</string>
     <string name="download_started">Added to download queue</string>
     <string name="download_failed">Download failed</string>
     <string name="no_downloads">No downloads yet</string>
